@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { inserirFilme, inserirImagem } from "../repository/filmeRepository.js";
+import { inserirFilme, inserirImagem,listarTodosFilmes } from "../repository/filmeRepository.js";
 import  multer  from 'multer' 
 
 const server = Router();
@@ -50,6 +50,17 @@ server.put("/filme/:id/capa", upload.single('capa'),async(req,resp) => {
             }catch(err){
                 resp.status(400).send
             }
+})
+
+server.get('/filme', async(req,resp) =>{
+    try{
+     const resposta = await listarTodosFilmes();
+     resp.send(resposta);
+    }catch(err){
+        resp.status(400).send({
+            erro:err.message
+        })
+    }
 })
 
 export default server;
